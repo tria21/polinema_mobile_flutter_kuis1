@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'riwayat.dart';
 void main() {
   runApp(MyApp());
 }
@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
         else if (_newValueResult == "Rim")
           _result = _inputUser / 500;
         else
-        _result = _inputUser;
+          _result = _inputUser;
       } else if (_newValueInput == "Lusin") {
         if (_newValueResult == "Buah")
           _result = _inputUser * 12;
@@ -63,7 +63,7 @@ class _MyAppState extends State<MyApp> {
         else if (_newValueResult == "Rim")
           _result = (_inputUser * 12) / 500;
         else
-        _result = _inputUser;
+          _result = _inputUser;
       } else if (_newValueInput == "Kodi") {
         if (_newValueResult == "Buah")
           _result = _inputUser * 20;
@@ -74,7 +74,7 @@ class _MyAppState extends State<MyApp> {
         else if (_newValueResult == "Rim")
           _result = (_inputUser * 20) / 500;
         else
-        _result = _inputUser;
+          _result = _inputUser;
       } else if (_newValueInput == "Gross") {
         if (_newValueResult == "Buah")
           _result = _inputUser * 144;
@@ -85,7 +85,7 @@ class _MyAppState extends State<MyApp> {
         else if (_newValueResult == "Rim")
           _result = (_inputUser * 144) / 500;
         else
-        _result = _inputUser;
+          _result = _inputUser;
       } else {
         if (_newValueResult == "Buah")
           _result = _inputUser * 500;
@@ -96,8 +96,10 @@ class _MyAppState extends State<MyApp> {
         else if (_newValueResult == "Gross")
           _result = (_inputUser * 500) / 144;
         else
-        _result = _inputUser;
+          _result = _inputUser;
       }
+      //menampilkan riwayat konversi
+      listViewItem.add("$_newValueInput : $_result $_newValueResult");
     });
   }
 
@@ -142,6 +144,7 @@ class _MyAppState extends State<MyApp> {
                   onChanged: (String changeValue) {
                     setState(() {
                       _newValueInput = changeValue;
+                      perhitungan(); //untuk auto konvert ketika mengganti value dropdown
                     });
                   },
                 ),
@@ -161,6 +164,7 @@ class _MyAppState extends State<MyApp> {
                   onChanged: (String changeValue) {
                     setState(() {
                       _newValueResult = changeValue;
+                      perhitungan(); //untuk auto konvert ketika mengganti value dropdown
                     });
                   },
                 ),
@@ -177,10 +181,21 @@ class _MyAppState extends State<MyApp> {
                     textColor: Colors.white,
                     child: const Text('KONVERSI'),
                   ),
-                )
+                ),
+                Container(
+                    margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                    child: Text(
+                      "Riwayat Konversi",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,),
+                  ),
+                  ),
+                  Expanded(
+                    child: Riwayat(listViewItem: listViewItem)
+                  ),
               ],
             ),
-          )),
+          )
+        ),
     );
   }
 }
