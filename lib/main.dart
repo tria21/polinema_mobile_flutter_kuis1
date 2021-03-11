@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'input.dart';
+import 'inputdrop.dart';
+import 'result.dart';
+import 'resultdrop.dart';
+import 'convert.dart';
 import 'riwayat.dart';
 void main() {
   runApp(MyApp());
@@ -38,6 +43,19 @@ class _MyAppState extends State<MyApp> {
   //membuat value awal yang ditampilkan pada dropdown
   String _newValueInput = "Buah";
   String _newValueResult = "Buah";
+
+  void dropdownOnChangedInput(String changeValue) {
+    setState(() {
+      _newValueInput = changeValue;
+      });
+  }
+
+  void dropdownOnChangedResult(String changeValue) {
+    setState(() {
+      _newValueResult = changeValue;
+      perhitungan(); //untuk auto konvert ketika mengganti value dropdown
+      });
+  }
 
   void perhitungan() {
     setState(() {
@@ -122,79 +140,42 @@ class _MyAppState extends State<MyApp> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                //membuat input
-                TextFormField(
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  controller: etInput,
-                  keyboardType: TextInputType.numberWithOptions(
-                    decimal: true,
-                    signed: false,
-                  ),
-                  decoration: InputDecoration(
-                      hintText: 'Masukkan Jumlah Yang Akan Dikonversi'),
-                ),
-                DropdownButton(
-                  items: listItem.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  value: _newValueInput,
-                  onChanged: (String changeValue) {
-                    setState(() {
-                      _newValueInput = changeValue;
-                      perhitungan(); //untuk auto konvert ketika mengganti value dropdown
-                    });
-                  },
-                ),
-                //membuat result
-                Text(
-                  "$_result",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-                DropdownButton<String>(
-                  items: listItem.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  value: _newValueResult,
-                  onChanged: (String changeValue) {
-                    setState(() {
-                      _newValueResult = changeValue;
-                      perhitungan(); //untuk auto konvert ketika mengganti value dropdown
-                    });
-                  },
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: RaisedButton(
-                    onPressed: () {
-                      setState(() {
-                        perhitungan();
-                      });
-                    },
-                    color: Colors.amber[600],
-                    textColor: Colors.white,
-                    child: const Text('KONVERSI'),
-                  ),
-                ),
-                Container(
+                  //memanggil class input.dart untuk ditampilkan pada aplikasi
+                  Input(etInput: etInput),
+
+                  //memanggil inputdrop.dart untuk ditampilkan di bawah input
+                  DropdownInput(
+                    listItem: listItem, 
+                    newValue: _newValueInput, 
+                    dropdownOnChangedInput : dropdownOnChangedInput
+                    ),
+
+                  //menambahkan result.dart
+                  Result(result: _result),
+
+                  /*menambah resultdrop.dart di bawah result.dart
+                  */
+                  DropdownResult(
+                    listItem: listItem, 
+                    newValue: _newValueResult, 
+                    dropdownOnChangedResult : dropdownOnChangedResult),
+
+                  Convert(konvertHandler: perhitungan),
+                  
+                  Container(
                     margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
                     child: Text(
                       "Riwayat Konversi",
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,),
                   ),
                   ),
+
                   Expanded(
                     child: Riwayat(listViewItem: listViewItem)
                   ),
               ],
             ),
-          )
+          ),
         ),
     );
   }
