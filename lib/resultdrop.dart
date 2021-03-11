@@ -7,7 +7,8 @@ class DropdownResult extends StatelessWidget {
     @required this.listItem,
     @required String newValue,
     @required this.dropdownOnChangedResult,
-  }) : _newValueResult = newValue, super(key: key);
+  })  : _newValueResult = newValue,
+        super(key: key);
 
   final List<String> listItem;
   final String _newValueResult;
@@ -16,15 +17,15 @@ class DropdownResult extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButton(
-                  items: listItem.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  value: _newValueResult,
-                  onChanged: dropdownOnChangedResult,//untuk auto konvert ketika mengganti value dropdown
-                  );
+      items: listItem.map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      value: _newValueResult,
+      /*mengisi onChanged dengan function dropdownOnChangedResult yg terdapat pada main.dart*/
+      onChanged: dropdownOnChangedResult,
+    );
   }
 }
-

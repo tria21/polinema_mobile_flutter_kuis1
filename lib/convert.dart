@@ -11,6 +11,7 @@ Convert({Key key, @required this.konvertHandler});
       width: double.infinity,
       height: 50,
       child: RaisedButton(
+  /*menginisiasikan ketika button ditekan akan memanggil function konvertHandler agar perhitungan dieksekusi */
           onPressed: konvertHandler,
           color: Colors.amber[600],
           textColor: Colors.white,
